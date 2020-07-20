@@ -1,35 +1,43 @@
 {
   "project_info": {
-    "project_number": "155324189655",
-    "firebase_url": "https://ionic-firebase-2cf87.firebaseio.com",
-    "project_id": "ionic-firebase-2cf87",
-    "storage_bucket": "ionic-firebase-2cf87.appspot.com"
+    "project_number": "282902728159",
+    "firebase_url": "https://fir-dvbk.firebaseio.com",
+    "project_id": "firebase-dvbk",
+    "storage_bucket": "firebase-dvbk.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:155324189655:android:054a590986e18a91cad992",
+        "mobilesdk_app_id": "1:282902728159:android:69ae46dc653637f760486a",
         "android_client_info": {
           "package_name": "com.dvbk.car"
         }
       },
       "oauth_client": [
         {
-          "client_id": "155324189655-g829gpdv2rakvqsvhj0i9hrhoo3od0bs.apps.googleusercontent.com",
+          "client_id": "282902728159-hdkgcr56d7f1oken168lca3uj66je4ak.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBp4NObimTWREVQfdXMEaypMH2w_hI1iRg"
+          "current_key": "AIzaSyDFg0TYPvVTQmwEX2fv7WqE6xTlMcKdC44"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "155324189655-g829gpdv2rakvqsvhj0i9hrhoo3od0bs.apps.googleusercontent.com",
+              "client_id": "282902728159-hdkgcr56d7f1oken168lca3uj66je4ak.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "282902728159-dbu1ag0clp0pu2jtj52jevqghaou98sn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mc1.cardvbk",
+                "app_store_id": "1073822024"
+              }
             }
           ]
         }
@@ -37,28 +45,44 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:155324189655:android:8e6c063b6b9b7ea0cad992",
+        "mobilesdk_app_id": "1:282902728159:android:771cb177ec8afd1460486a",
         "android_client_info": {
-          "package_name": "com.positronx.pushnotification"
+          "package_name": "gps.dvbk.newcar"
         }
       },
       "oauth_client": [
         {
-          "client_id": "155324189655-g829gpdv2rakvqsvhj0i9hrhoo3od0bs.apps.googleusercontent.com",
+          "client_id": "282902728159-phmlbbubih562kdckotq7987ciissrb4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "gps.dvbk.newcar",
+            "certificate_hash": "a8608ff59fb2731d93d9ab55f220d6e68e93a441"
+          }
+        },
+        {
+          "client_id": "282902728159-hdkgcr56d7f1oken168lca3uj66je4ak.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBp4NObimTWREVQfdXMEaypMH2w_hI1iRg"
+          "current_key": "AIzaSyDFg0TYPvVTQmwEX2fv7WqE6xTlMcKdC44"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "155324189655-g829gpdv2rakvqsvhj0i9hrhoo3od0bs.apps.googleusercontent.com",
+              "client_id": "282902728159-hdkgcr56d7f1oken168lca3uj66je4ak.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "282902728159-dbu1ag0clp0pu2jtj52jevqghaou98sn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mc1.cardvbk",
+                "app_store_id": "1073822024"
+              }
             }
           ]
         }
