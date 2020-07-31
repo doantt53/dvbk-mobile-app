@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:car/NetworkUtil.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewAppGPS extends StatefulWidget {
@@ -43,6 +45,8 @@ class _WebViewExampleState extends State<WebViewAppGPS> {
     });
   }
 
+
+  var result =  Connectivity().checkConnectivity();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,10 +55,16 @@ class _WebViewExampleState extends State<WebViewAppGPS> {
       child: Builder(builder: (BuildContext context) {
         return WebView(
           initialUrl: 'https://dvbk.vn/Mobile/MobileLogin',
+          //initialUrl: 'https://dvbk.vn/Mobile/MobileLogin',
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
-            _controller.complete(webViewController);
-            _web_controller = webViewController;
+            if(1!=1){
+              _controller.complete(webViewController);
+              _web_controller = webViewController;
+              print("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+            }else{
+              print("=============================================================================");
+            }
           },
           // ignore: prefer_collection_literals
           javascriptChannels: <JavascriptChannel>[
@@ -67,6 +77,7 @@ class _WebViewExampleState extends State<WebViewAppGPS> {
             print('Page started loading: $url');
           },
           onPageFinished: (String url) async {
+
             if(url.startsWith('https://dvbk.vn/Mobile/Index') && !_isSendToSever) {
 
               String cookies = await _web_controller.evaluateJavascript('document.cookie');
