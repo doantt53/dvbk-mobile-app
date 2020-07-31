@@ -1,9 +1,16 @@
+import 'dart:async';
+
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 
 import 'WebViewGPS.dart';
+import 'package:car/NoConnectivtyView.dart';
 
 void main() => runApp(new MyApp());
+
+final GlobalKey<NavigatorState> nav = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   @override
@@ -51,12 +58,85 @@ class _MyHomePageState extends State<MyHomePage> {
 //    });
 //  }
 
+  StreamSubscription connectivitySubscription;
+  ConnectivityResult _previousResult;
+
+  @override
+  void initState() {
+    super.initState();
+//    connectivitySubscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult connectivityResult) {
+//      if (connectivityResult == ConnectivityResult.none) {
+//        _showDialog('Không có Internet', "Bạn cần kết nối Internet để truy cập ứng dụng");
+//        nav.currentState.pop(MaterialPageRoute(
+//            builder: (BuildContext _) => NoConnectivtyView()
+//        ));
+////        nav.currentState.pop(MaterialPageRoute(
+////            builder: (BuildContext _) => WebViewAppGPS()
+////        ));
+//      }
+//      else if (_previousResult == ConnectivityResult.none){
+//        nav.currentState.push(MaterialPageRoute(
+//            builder: (BuildContext _) => WebViewAppGPS()
+//        ));
+//      }
+//
+//      _previousResult = connectivityResult;
+//    });
+
+    connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult connectivityResult) {
+      if (connectivityResult != ConnectivityResult.none) {
+        nav.currentState.pushReplacement(
+            MaterialPageRoute(builder: (BuildContext _) => WebViewAppGPS()));
+      }
+      if (connectivityResult == ConnectivityResult.none) {
+        _showDialog('Không có Internet', "Bạn cần kết nối Internet để truy cập ứng dụng");
+      }
+      _previousResult = connectivityResult;
+    });
+  }
+
+//  _checkInternetConnectivity() async {
+//    var result = await Connectivity().checkConnectivity();
+//    if (result == ConnectivityResult.none) {
+//      _showDialog('No internet', "You're not connected to a network");
+//    } else if (result == ConnectivityResult.mobile) {
+//      _showDialog('Internet access', "You're connected over mobile data");
+//    } else if (result == ConnectivityResult.wifi) {
+//      _showDialog('Internet access', "You're connected over wifi");
+//    }
+//    //return WebViewAppGPS();
+//  }
+  _showDialog(title, text) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(text),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  //Navigator.of(context).pop();
+                  SystemNavigator.pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: MaterialApp(
+        navigatorKey: nav,
         home: Scaffold(
-          body: WebViewAppGPS(),
+          body: NoConnectivtyView(),
+          //body: NoConnectivtyView(),
+          //body: _checkInternetConnectivity(),
         ),
         //home: WebViewAppGPS(),
       ),
