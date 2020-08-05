@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>282902728159-roa6fjhfv8r5vc0g953bmrb3532me71t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.282902728159-roa6fjhfv8r5vc0g953bmrb3532me71t</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>282902728159-phmlbbubih562kdckotq7987ciissrb4.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAN8lFuweCteaebQa0CXHTwMb8udOH5q4k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>282902728159</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.dvbk.carweb</string>
+	<key>PROJECT_ID</key>
+	<string>firebase-dvbk</string>
+	<key>STORAGE_BUCKET</key>
+	<string>firebase-dvbk.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:282902728159:ios:25580c34a372964860486a</string>
+	<key>DATABASE_URL</key>
+	<string>https://fir-dvbk.firebaseio.com</string>
+</dict>
+</plist>
