@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('Ok'),
                 onPressed: () {
                   //Navigator.of(context).pop();
-                  SystemNavigator.pop();
+                  SystemNavigator.pop(); // Close cả app ra ngoài
                 },
               )
             ],
