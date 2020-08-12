@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:ffi';
+import 'dart:io';
 
+//import 'package:connectivity/connectivity.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -35,83 +38,72 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-//  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
 
-//  @override
-//  void initState() {
-//    super.initState();
-//    _firebaseMessaging.configure(
-//      onMessage: (Map<String, dynamic> message) {
-//        print('on message $message');
-//      },
-//      onResume: (Map<String, dynamic> message) {
-//        print('on resume $message');
-//      },
-//      onLaunch: (Map<String, dynamic> message) {
-//        print('on launch $message');
-//      },
-//    );
-//    _firebaseMessaging.requestNotificationPermissions(
-//        const IosNotificationSettings(sound: true, badge: true, alert: true));
-//    _firebaseMessaging.getToken().then((token) {
-//      print(token);
-//    });
-//  }
+  StreamSubscription _connectionChangeStream;
 
-  StreamSubscription connectivitySubscription;
-  ConnectivityResult _previousResult;
+  AnimationController controller;
+  Stream stream;
+
+  bool _hasConnection = true;
 
   @override
   void initState() {
     super.initState();
-//    connectivitySubscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult connectivityResult) {
-//      if (connectivityResult == ConnectivityResult.none) {
-//        _showDialog('Không có Internet', "Bạn cần kết nối Internet để truy cập ứng dụng");
-//        nav.currentState.pop(MaterialPageRoute(
-//            builder: (BuildContext _) => NoConnectivtyView()
-//        ));
-////        nav.currentState.pop(MaterialPageRoute(
-////            builder: (BuildContext _) => WebViewAppGPS()
-////        ));
-//      }
-//      else if (_previousResult == ConnectivityResult.none){
-//        nav.currentState.push(MaterialPageRoute(
-//            builder: (BuildContext _) => WebViewAppGPS()
-//        ));
-//      }
-//
-//      _previousResult = connectivityResult;
-//    });
 
-    connectivitySubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult connectivityResult) {
-      if (connectivityResult != ConnectivityResult.none) {
-        nav.currentState.pushReplacement(
-            MaterialPageRoute(builder: (BuildContext _) => WebViewAppGPS()));
-      }
-      if (connectivityResult == ConnectivityResult.none) {
-        _showDialog('Không có Internet', "Bạn cần kết nối Internet để truy cập ứng dụng");
-      }
-      _previousResult = connectivityResult;
-    });
+//    _ConnectionStatusSingleton connectionStatus = _ConnectionStatusSingleton.getInstance();
+//    connectionStatus.initialize("google.com");
+//    _connectionChangeStream = connectionStatus.connectionChange.listen(_connectionChanged);
+
+    //CheckNetWorkOpenApp();
+
+    _ConnectionStatusSingleton connectionStatus = _ConnectionStatusSingleton.getInstance();
+    connectionStatus.initialize("google.com");
+    _connectionChangeStream = connectionStatus.connectionChange.listen(_connectionChanged);
+
+
   }
 
-//  _checkInternetConnectivity() async {
-//    var result = await Connectivity().checkConnectivity();
-//    if (result == ConnectivityResult.none) {
-//      _showDialog('No internet', "You're not connected to a network");
-//    } else if (result == ConnectivityResult.mobile) {
-//      _showDialog('Internet access', "You're connected over mobile data");
-//    } else if (result == ConnectivityResult.wifi) {
-//      _showDialog('Internet access', "You're connected over wifi");
+//  void CheckNetWork(bool hasConnection) async {
+//    try {
+//      final result = await InternetAddress.lookup('google.com');
+//      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+//       // Navigator.pop(dialogContext);
+//        nav.currentState.pushReplacement(
+//            MaterialPageRoute(builder: (BuildContext _) => WebViewAppGPS()));
+//      }
+//    } on SocketException catch (_) {
+//      nav.currentState.pushReplacement(
+//          MaterialPageRoute(builder: (BuildContext _) => NoConnectivtyView()));
+//      _showDialog('Không có Internet', "Bạn cần kết nối Internet để truy cập ứng dụng");
 //    }
-//    //return WebViewAppGPS();
 //  }
+  
+
+  void _connectionChanged(bool hasConnection) {
+
+    if (_hasConnection == hasConnection) return;
+    //hasConnection == false ? controller.forward() : controller.reverse();
+    _hasConnection = hasConnection;
+    print('connected============================ $_hasConnection');
+    if(_hasConnection == true){
+      Navigator.pop(dialogContext);
+      nav.currentState.pushReplacement(
+           MaterialPageRoute(builder: (BuildContext _) => WebViewAppGPS()));
+    }else{
+      nav.currentState.pushReplacement(
+          MaterialPageRoute(builder: (BuildContext _) => NoConnectivtyView()));
+      _showDialog('Không có Internet', "Bạn cần kết nối Internet để truy cập ứng dụng");
+    }
+    // print('connected $_hasConnection');
+
+  }
+
+  BuildContext dialogContext;
   _showDialog(title, text) {
     showDialog(
         context: context,
         builder: (context) {
+          dialogContext = context;
           return AlertDialog(
             title: Text(title),
             content: Text(text),
@@ -134,12 +126,67 @@ class _MyHomePageState extends State<MyHomePage> {
       child: MaterialApp(
         navigatorKey: nav,
         home: Scaffold(
-          body: NoConnectivtyView(),
           //body: NoConnectivtyView(),
+          body: WebViewAppGPS(),
           //body: _checkInternetConnectivity(),
         ),
         //home: WebViewAppGPS(),
       ),
     );
+  }
+}
+
+
+
+
+class _ConnectionStatusSingleton {
+  String _lookUpAddress;
+  static final _ConnectionStatusSingleton _singleton = _ConnectionStatusSingleton._internal();
+  _ConnectionStatusSingleton._internal();
+
+  static _ConnectionStatusSingleton getInstance() => _singleton;
+
+  bool hasConnection = true;
+
+  StreamController<bool> connectionChangeController = StreamController.broadcast();
+
+  final Connectivity _connectivity = Connectivity();
+
+  void initialize(String lookUpAddress) {
+    this._lookUpAddress = lookUpAddress;
+    _connectivity.onConnectivityChanged.listen(_connectionChange);
+    checkConnection();
+  }
+
+  Stream<bool> get connectionChange => connectionChangeController.stream;
+
+  void dispose() {
+    connectionChangeController.close();
+  }
+
+  void _connectionChange(ConnectivityResult result) {
+    checkConnection();
+  }
+
+  Future<bool> checkConnection() async {
+    assert(_lookUpAddress != null || _lookUpAddress != '');
+    bool previousConnection = hasConnection;
+
+    try {
+      final result = await InternetAddress.lookup(_lookUpAddress);
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        hasConnection = true;
+      } else {
+        hasConnection = false;
+      }
+    } on SocketException catch (_) {
+      hasConnection = false;
+    }
+
+    if (previousConnection != hasConnection) {
+      connectionChangeController.add(hasConnection);
+    }
+
+    return hasConnection;
   }
 }
