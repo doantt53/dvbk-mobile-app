@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //      _showDialog('Không có Internet', "Bạn cần kết nối Internet để truy cập ứng dụng");
 //    }
 //  }
-  
+
 
   void _connectionChanged(bool hasConnection) {
 
@@ -86,7 +86,10 @@ class _MyHomePageState extends State<MyHomePage> {
     _hasConnection = hasConnection;
     print('connected============================ $_hasConnection');
     if(_hasConnection == true){
-      Navigator.pop(dialogContext);
+      try{
+        Navigator.pop(dialogContext);
+      }catch(e){}
+
       nav.currentState.pushReplacement(
            MaterialPageRoute(builder: (BuildContext _) => WebViewAppGPS()));
     }else{
